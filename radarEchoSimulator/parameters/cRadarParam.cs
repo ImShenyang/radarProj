@@ -7,9 +7,6 @@ namespace radarEchoSimulator.parameters
 {
     class cRadarParam:cComm
     {
-        //雷达工作模式：脉冲多普勒，脉冲压缩，频率捷变，连续波
-        private eOperateMode operateMode;
-
         ///雷达参数：
         ///
         // 共有
@@ -65,19 +62,6 @@ namespace radarEchoSimulator.parameters
             return BandWidth / Tr(mode, prf);
         }
         private double nan;
-
-        public eOperateMode OperateMode
-        {
-            get
-            {
-                return operateMode;
-            }
-
-            set
-            {
-                operateMode = value;
-            }
-        }
 
         public double Fc
         {
@@ -273,8 +257,6 @@ namespace radarEchoSimulator.parameters
         ///PD
         //脉冲多普勒雷达重频类型（脉组）
         public eRepeatedFrequancyType aRFType;
-        //pulseCompression:LFM SFM BPSK
-        public ePulseCmprsType aPulseCmprsType;
         //SFM
         public double m_f;//        param_sfm.m_f = 1;   % 正弦调制指数 SFM
         public double f_m;//      param_sfm.f_m = 10;  % 正弦调制频率 SFM
@@ -324,7 +306,6 @@ namespace radarEchoSimulator.parameters
         public cRadarParam()
         {
             aRFType = eRepeatedFrequancyType.typeConstant;
-            aPulseCmprsType = ePulseCmprsType.NULL;
             m_f = 50000;
             f_m = 10000;
             numByte = 13;

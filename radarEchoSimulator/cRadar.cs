@@ -105,9 +105,12 @@ namespace radarEchoSimulator
         //private mRadarProcessings.mRadarLib mRadarV2 = new mRadarProcessings.mRadarLib();
         private mRadarLib mRadar = new mRadarLib();
 
-        private MWStructArray param;// = new MWStructArray(1, 1, paramNames_PD);
-        private MWStructArray MWJamParam = new MWStructArray(1, 1, JamParamNames);
-        private MWStructArray RadarResult = new MWStructArray();
+        //inputs
+        private MWStructArray MWParam = null;// = new MWStructArray(1, 1, paramNames_PD);
+        private MWStructArray MWJamParam = null;// new MWStructArray(1, 1, JamParamNames);
+
+        //outputs
+        private MWStructArray MWRadarResult = new MWStructArray();
 
         //results:
         private long rowOfEchoData;
@@ -408,11 +411,64 @@ namespace radarEchoSimulator
         #endregion
 
         #region methods
-        
+
         /// <summary>
         /// 参数操作方法
         /// </summary>
-        private void setRadarParams()
+        /// 
+        private void setRadarMode(cRadarMode aRadarMode)
+        {
+
+        }
+        private cRadarMode getRadarMode()
+        {
+            cRadarMode aRadarMode = new cRadarMode();
+
+            return aRadarMode;
+        }
+
+        private void initiAllParam(cRadarMode aRadarMode)
+        {
+            List<string> paramList = new List<string>();
+            foreach (string str in paramNames)
+                paramList.Add(str); //
+
+            switch (aRadarMode.OperateMode)
+            {
+                case eOperateMode.pulsedDopplerRadar:
+                    foreach (string str in paramNames_PD)
+                        paramList.Add(str);
+                    break;
+                case eOperateMode.pulseCompressionRadar:
+                    if (aRadarMode.APulseCmprsType == ePulseCmprsType.LFM)
+                        foreach (string str in paramNames_PC_LFM)
+                            paramList.Add(str);
+                    else if (aRadarMode.APulseCmprsType == ePulseCmprsType.SFM)
+                        foreach (string str in paramNames_PC_SFM)
+                            paramList.Add(str);
+                    else if (aRadarMode.APulseCmprsType == ePulseCmprsType.BPSK)
+                        foreach (string str in paramNames_PC_BPSK)
+                            paramList.Add(str);
+                    break;
+                case eOperateMode.frequencyAgileRadar:
+                    foreach (string str in paramNames_FA)
+                        paramList.Add(str);
+                    break;
+                case eOperateMode.FMCW:
+                    foreach (string str in paramNames_FMCW)
+                        paramList.Add(str);
+                    break;
+                default:
+                    break;
+            }
+            MWParam = new MWStructArray(1, 1, paramList.ToArray());
+            MWJamParam = new MWStructArray(1, 1, JamParamNames);
+
+
+            return;
+        }
+
+        private void setRadarParams(cRadarParam aRadarParm)
         {
             return;
         }
