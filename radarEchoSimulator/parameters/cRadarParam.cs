@@ -49,7 +49,7 @@ namespace radarEchoSimulator.parameters
         public double Tr(eOperateMode mode, double prf)
         {
             if (mode == eOperateMode.pulseCompressionRadar && aPulseCmprsType == ePulseCmprsType.BPSK)
-                return codeT() * numByte;
+                return codeT() * NumByte;
             else if (eOperateMode.FMCW == mode)
                 return 1 / prf;
             return DutyRatio / prf;
@@ -63,6 +63,52 @@ namespace radarEchoSimulator.parameters
         }
         private double nan;
 
+        ///PD
+        //脉冲多普勒雷达重频类型（脉组）
+        private eRepeatedFrequancyType aRFType;
+        //SFM
+        private double m_f;//        param_sfm.m_f = 1;   % 正弦调制指数 SFM
+        private double f_m;//      param_sfm.f_m = 10;  % 正弦调制频率 SFM
+        //BPSK
+        private double numByte;//BPSK
+
+        public double codeT()
+        {
+            return 1 / BandWidth;
+        }
+        public double[] setwvfm(double prf)
+        {
+            int tmp = (int)Math.Ceiling(Fs * Tr(eOperateMode.pulseCompressionRadar, prf) / NumByte);
+            double[] dataTrans = { -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1 };
+            int num = 13 * tmp;
+            double[] wvfm = new double[num];
+            int i = 0;
+            foreach (double var in dataTrans)
+            {
+                if (var == 1)
+                {
+                    for (int j = i; j < i + tmp; j++)
+                        wvfm[j] = 1;
+                }
+                else
+                {
+                    for (int j = i; j < i + tmp; j++)
+                        wvfm[j] = 0;
+                }
+                i += tmp;
+            }
+            return dataTrans;
+        }
+        //FrequencyAgility
+        private double numFreq;         //param_freqag.N_freq = 4;%捷变频个数
+        private double scanOffset;         //param_freqag.scanOffset = 10e6;  % 跳变间隔
+        private double numPlsGrounp;         //param_freqag.plsgroupNum = 32;%脉冲数
+
+        //性能分析参数：
+        private double exp_num;
+        private bool[] cases;
+
+        //解析函数
         public double Fc
         {
             get
@@ -206,6 +252,123 @@ namespace radarEchoSimulator.parameters
             }
         }
 
+        internal eRepeatedFrequancyType ARFType
+        {
+            get
+            {
+                return aRFType;
+            }
+
+            set
+            {
+                aRFType = value;
+            }
+        }
+
+        public double M_f
+        {
+            get
+            {
+                return m_f;
+            }
+
+            set
+            {
+                m_f = value;
+            }
+        }
+
+        public double F_m
+        {
+            get
+            {
+                return f_m;
+            }
+
+            set
+            {
+                f_m = value;
+            }
+        }
+
+        public double NumByte
+        {
+            get
+            {
+                return numByte;
+            }
+
+            set
+            {
+                numByte = value;
+            }
+        }
+
+        public double NumFreq
+        {
+            get
+            {
+                return numFreq;
+            }
+
+            set
+            {
+                numFreq = value;
+            }
+        }
+
+        public double ScanOffset
+        {
+            get
+            {
+                return scanOffset;
+            }
+
+            set
+            {
+                scanOffset = value;
+            }
+        }
+
+        public double NumPlsGrounp
+        {
+            get
+            {
+                return numPlsGrounp;
+            }
+
+            set
+            {
+                numPlsGrounp = value;
+            }
+        }
+
+        public double Exp_num
+        {
+            get
+            {
+                return exp_num;
+            }
+
+            set
+            {
+                exp_num = value;
+            }
+        }
+
+        public bool[] Cases
+        {
+            get
+            {
+                return cases;
+            }
+
+            set
+            {
+                cases = value;
+            }
+        }
+
         //public void setNan(double nan, eOperateMode mode)
         //{
         //    if (mode == eOperateMode.frequencyAgileRadar)
@@ -251,53 +414,6 @@ namespace radarEchoSimulator.parameters
 
 
         //特有
-        
-            
-            
-        ///PD
-        //脉冲多普勒雷达重频类型（脉组）
-        public eRepeatedFrequancyType aRFType;
-        //SFM
-        public double m_f;//        param_sfm.m_f = 1;   % 正弦调制指数 SFM
-        public double f_m;//      param_sfm.f_m = 10;  % 正弦调制频率 SFM
-        //BPSK
-        public double numByte;//BPSK
-
-        public double codeT()
-        {
-            return 1 / BandWidth;
-        }
-        public double[] setwvfm(double prf)
-        {
-            int tmp = (int)Math.Ceiling(Fs * Tr(eOperateMode.pulseCompressionRadar, prf) / numByte);
-            double[] dataTrans = { -1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1 };
-            int num = 13 * tmp;
-            double[] wvfm = new double[num];
-            int i = 0;
-            foreach (double var in dataTrans)
-            {
-                if (var == 1)
-                {
-                    for (int j = i; j < i + tmp; j++)
-                        wvfm[j] = 1;
-                }
-                else
-                {
-                    for (int j = i; j < i + tmp; j++)
-                        wvfm[j] = 0;
-                }
-                i += tmp;
-            }
-            return dataTrans;
-        }
-        //FrequencyAgility
-        public double NumFreq;         //param_freqag.N_freq = 4;%捷变频个数
-        public double scanOffset;         //param_freqag.scanOffset = 10e6;  % 跳变间隔
-        public double NumPlsGrounp;         //param_freqag.plsgroupNum = 32;%脉冲数
-
-        //性能分析参数：
-        public double exp_num;
-        public bool[] Case;
 
 
         /// <summary>
@@ -305,19 +421,19 @@ namespace radarEchoSimulator.parameters
         /// </summary>
         public cRadarParam()
         {
-            aRFType = eRepeatedFrequancyType.typeConstant;
-            m_f = 50000;
-            f_m = 10000;
-            numByte = 13;
+            ARFType = eRepeatedFrequancyType.typeConstant;
+            M_f = 50000;
+            F_m = 10000;
+            NumByte = 13;
             NumFreq = 4;
-            scanOffset = 10000000;
+            ScanOffset = 10000000;
             NumPlsGrounp = 32;
 
-            exp_num = 10;
-            Case = new bool[3];
-            Case[0] = false;
-            Case[1] = false;
-            Case[2] = false;
+            Exp_num = 10;
+            Cases = new bool[3];
+            Cases[0] = false;
+            Cases[1] = false;
+            Cases[2] = false;
         }
 
     }

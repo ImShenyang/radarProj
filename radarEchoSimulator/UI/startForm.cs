@@ -13,7 +13,7 @@ namespace radarEchoSimulator
     public partial class startForm : Form
     {
         //loadRadar
-        private cRadar myRadar = null;// = new cRadar();
+        private cMainRadar myRadar = null;// = new cRadar();
         //loadUI
         private mainForm myMainForm = null;
 
@@ -39,7 +39,7 @@ namespace radarEchoSimulator
 
         private void backgroundWorker_loadRadar_DoWork(object sender, DoWorkEventArgs e)
         {
-            myRadar = new cRadar();
+            myRadar = new cMainRadar();
         }
 
         private void backgroundWorker_loadRadar_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

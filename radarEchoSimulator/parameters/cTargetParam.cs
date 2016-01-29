@@ -96,8 +96,7 @@ namespace radarEchoSimulator.parameters
                 vrMin = value;
             }
         }
-
-        public double VrMax
+                public double VrMax
         {
             get
             {

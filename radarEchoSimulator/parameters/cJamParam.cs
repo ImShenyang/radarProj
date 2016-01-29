@@ -212,7 +212,7 @@ namespace radarEchoSimulator.parameters
             this.RangeStart = rs;
             this.RangeEnd = re;
             this.Num = n;
-            this.Rangesample = null;
+            //this.Rangesample = null;
             this.Vsample = null;
             this.JSR = null;
             this.B = b;
