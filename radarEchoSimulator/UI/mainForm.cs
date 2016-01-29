@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace radarEchoSimulator
 {
-    public partial class startForm : Form
+    public partial class mainForm : Form
     {
-        public startForm()
+        public mainForm()
         {
             InitializeComponent();
         }

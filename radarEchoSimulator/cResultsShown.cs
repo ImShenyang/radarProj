@@ -5,7 +5,7 @@ using System.Text;
 
 namespace radarEchoSimulator
 {
-    class initialization
+    class cResultsShown
     {
 
     }
